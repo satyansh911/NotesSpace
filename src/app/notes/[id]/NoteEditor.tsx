@@ -374,7 +374,7 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
             className="w-10 h-10 rounded-xl bg-surface-container hover:bg-surface-container-high flex items-center justify-center transition-all hover:scale-110 active:scale-95 text-on-surface-variant"
           >
             <span className="material-symbols-outlined text-xl">
-              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+              {theme === 'dark' ? 'dark_mode' : 'light_mode'}
             </span>
           </button>
 

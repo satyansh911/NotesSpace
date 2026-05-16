@@ -150,7 +150,7 @@ function DashboardContent() {
             className="w-11 h-11 rounded-xl bg-surface-container-low border border-outline-variant/10 hover:bg-surface-container flex items-center justify-center transition-all hover:scale-110 active:scale-95 text-on-surface-variant"
           >
             <span className="material-symbols-outlined">
-              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+              {theme === 'dark' ? 'dark_mode' : 'light_mode'}
             </span>
           </button>
           {user && (
