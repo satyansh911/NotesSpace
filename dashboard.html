@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Peblo Notes - Productivity Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e4e2df",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#5f5e60",
+                        "primary-fixed": "#e4e2e4",
+                        "tertiary-fixed-dim": "#cec4c2",
+                        "surface-container": "#efeeeb",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "on-tertiary-fixed": "#1f1a19",
+                        "on-primary-container": "#868587",
+                        "primary": "#030304",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#4c4544",
+                        "tertiary-container": "#211c1b",
+                        "tertiary": "#040302",
+                        "surface-container-low": "#f5f3f0",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#c8c6c8",
+                        "inverse-on-surface": "#f2f0ed",
+                        "on-surface": "#1b1c1a",
+                        "on-primary-fixed-variant": "#474649",
+                        "on-surface-variant": "#46464a",
+                        "surface-dim": "#dbdad7",
+                        "on-secondary-fixed-variant": "#004493",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#c8c6c8",
+                        "primary-container": "#1d1d1f",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#1b1b1d",
+                        "secondary-container": "#0070eb",
+                        "secondary": "#0058bc",
+                        "on-tertiary-container": "#8c8382",
+                        "surface": "#fbf9f6",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-secondary-container": "#fefcff",
+                        "inverse-surface": "#30312f",
+                        "surface-variant": "#e4e2df",
+                        "outline-variant": "#c7c6ca",
+                        "surface-bright": "#fbf9f6",
+                        "error-container": "#ffdad6",
+                        "background": "#fbf9f6",
+                        "on-background": "#1b1c1a",
+                        "tertiary-fixed": "#ebe0de",
+                        "surface-container-high": "#eae8e5",
+                        "outline": "#77767b",
+                        "on-secondary-fixed": "#001a41",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "120px",
+                        "gutter": "32px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "80px",
+                        "container-max": "1200px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["EB Garamond"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["EB Garamond"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["EB Garamond"],
+                        "display-lg-mobile": ["EB Garamond"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            box-shadow: inset 0 1px 1px rgba(0, 122, 255, 0.15), 0 8px 40px rgba(0, 0, 0, 0.04);
+        }
+        .ambient-glow {
+            box-shadow: inset 2px 2px 15px rgba(0, 122, 255, 0.15);
+        }
+        body {
+            background-color: #fbf9f6;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface font-body-md text-body-md selection:bg-secondary-fixed-dim">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex items-center justify-between px-margin-mobile h-16 bg-white/80 dark:bg-black/20 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(0,122,255,0.15)] md:px-margin-desktop">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 duration-200 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-primary" data-icon="menu">menu</span>
+</button>
+<h1 class="font-display-lg text-display-lg-mobile md:text-headline-sm md:font-headline-sm text-primary tracking-tight">Peblo Notes</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline/10">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A professional and clean studio headshot of a person with a neutral expression, set against a soft, minimalist background. The lighting is diffused and even, evoking a sense of calm and high-end digital identity. The overall aesthetic is polished and premium, aligning with a sophisticated minimalist brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEpN1OKhjK-g_OKHFVGf4xA2zExXG8XFrMbOIciURC-TQLZpz8d2LY1itZzvEM3BZFWyma3WY5iVJ1imbAl2oQMIfCmE-J-PwBw2p8vaJzg6Kj48tsGheF2EIvPY6gtJ4j89mqvs2qKvsUV0wYj9cC1kExFiT1HIE776eS4eiyzd4usdMKYHzSLcCEj1P-VRXxtsLHLql6npRPC37PRCAmeRdkJipeXz7U_vnbtUOaIEoD3d7KOT4Bv5j24G1fW9cA95-Teg2YJCA"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Hero Section -->
+<section class="mb-12">
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-2">Good morning, Peblo.</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg max-w-2xl">Your thoughts, curated and calm. You have 3 focused tasks for today.</p>
+</section>
+<!-- Bento Grid Main Content -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Recent Notes Section (Asymmetric Grid) -->
+<div class="md:col-span-8 space-y-8">
+<div class="flex items-end justify-between">
+<h3 class="font-headline-md text-headline-md text-primary">Recent Notes</h3>
+<button class="text-secondary font-label-caps text-label-caps hover:underline">VIEW ALL</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<!-- Note Card 1 -->
+<div class="glass-card bg-surface-container-lowest p-8 rounded-[40px] flex flex-col justify-between h-64 hover:scale-[1.02] transition-transform duration-300 group">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full font-label-caps text-[10px] tracking-widest uppercase">Creative</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="push_pin">push_pin</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Architecture Study: The Void</h4>
+<p class="text-on-surface-variant line-clamp-3">Exploring the relationship between negative space and emotional resonance in modern Brutalist structures...</p>
+</div>
+<div class="text-on-surface-variant/60 font-label-caps text-[10px]">MAY 12, 2024</div>
+</div>
+<!-- Note Card 2 -->
+<div class="glass-card bg-surface-container-lowest p-8 rounded-[40px] flex flex-col justify-between h-64 hover:scale-[1.02] transition-transform duration-300 border border-secondary/5">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="bg-primary/5 text-primary px-3 py-1 rounded-full font-label-caps text-[10px] tracking-widest uppercase">Journal</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Morning Reflections</h4>
+<p class="text-on-surface-variant line-clamp-3">The light hitting the oak desk today reminds me of the summer in Kyoto. Serenity is a choice...</p>
+</div>
+<div class="text-on-surface-variant/60 font-label-caps text-[10px]">MAY 10, 2024</div>
+</div>
+<!-- Note Card 3 (Wide) -->
+<div class="sm:col-span-2 glass-card bg-surface-container-low p-8 rounded-[40px] flex flex-col md:flex-row gap-8 items-center border border-on-surface/5">
+<div class="w-full md:w-1/3 aspect-video md:aspect-square rounded-3xl overflow-hidden">
+<img alt="Workspace inspiration" class="w-full h-full object-cover grayscale-[20%] group-hover:scale-110 transition-transform duration-700" data-alt="A minimalist workspace featuring a sleek wooden desk, a single designer lamp casting warm ambient light, and a clean notebook. The background is a soft cream-colored wall, creating a serene and focused atmosphere. The composition is balanced and elegant, emphasizing digital silence and productivity through high-quality minimalist design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAutFsHNmkvwcb13rqbqbOUbg5zB6aA1bquVORhvqK2JYzF4ZFoihXgtiZhr8IPEUR0DB75cWmR0-x9lf1sjsYVF7JcJ-KfqUbmFDL2nuIvAdKwWooQo9Nb7a7bxsTZ2qq0KkX2jmFpRkMeP1BX7Qni6EXo2G6LrutSS5jwnnytF5e-5lK2IKr7EStzhZGPZTrxGz1ZOiUBwyHhi1n-9LfrF-u9dAxGITxAYvGhfz9H4AdKWqOfjgQi5OiwlGYuXuieiC62m-bwrOQ"/>
+</div>
+<div class="flex-1">
+<span class="bg-primary/5 text-primary px-3 py-1 rounded-full font-label-caps text-[10px] tracking-widest uppercase mb-4 inline-block">Work</span>
+<h4 class="font-headline-md text-headline-md text-primary mb-3">Product Roadmap Q3</h4>
+<p class="text-on-surface-variant mb-6">Finalizing the integration of ambient UI components and streamlining the user onboarding flow for the premium tier...</p>
+<div class="flex items-center gap-4">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-surface bg-slate-200"></div>
+<div class="w-6 h-6 rounded-full border-2 border-surface bg-slate-300"></div>
+</div>
+<span class="text-on-surface-variant/60 font-label-caps text-[10px]">SHARED WITH 2 OTHERS</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats & Quick Actions Section -->
+<div class="md:col-span-4 space-y-gutter">
+<!-- Activity Stats -->
+<div class="glass-card bg-white p-8 rounded-[40px] ambient-glow">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-6">Activity</h3>
+<div class="space-y-6">
+<div class="flex items-end justify-between h-32 px-2">
+<div class="w-3 bg-secondary/10 rounded-full h-[40%]"></div>
+<div class="w-3 bg-secondary/20 rounded-full h-[60%]"></div>
+<div class="w-3 bg-secondary/10 rounded-full h-[30%]"></div>
+<div class="w-3 bg-secondary/40 rounded-full h-[80%]"></div>
+<div class="w-3 bg-secondary-container rounded-full h-[95%]"></div>
+<div class="w-3 bg-secondary/20 rounded-full h-[50%]"></div>
+<div class="w-3 bg-secondary/10 rounded-full h-[45%]"></div>
+</div>
+<div class="flex justify-between text-on-surface-variant/40 font-label-caps text-[10px]">
+<span>MON</span>
+<span>TUE</span>
+<span>WED</span>
+<span>THU</span>
+<span>FRI</span>
+<span>SAT</span>
+<span>SUN</span>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-on-surface/5 space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Notes Created</span>
+<span class="font-headline-sm text-primary">24</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Focus Hours</span>
+<span class="font-headline-sm text-primary">12.5</span>
+</div>
+</div>
+</div>
+<!-- New Note Card (Action) -->
+<div class="bg-primary-container p-8 rounded-[40px] text-white flex flex-col items-center text-center group cursor-pointer active:scale-95 transition-all">
+<div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="add">add</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-2">Create New Note</h3>
+<p class="text-on-primary-container text-sm">Capture your fleeting thoughts before they vanish.</p>
+</div>
+<!-- Categories List -->
+<div class="p-8">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-6 tracking-[0.2em] uppercase">Collections</h4>
+<ul class="space-y-4">
+<li class="flex items-center gap-3 text-on-surface group cursor-pointer">
+<span class="material-symbols-outlined text-secondary/40 group-hover:text-secondary transition-colors" data-icon="folder">folder</span>
+<span class="font-body-md text-body-md">Personal</span>
+</li>
+<li class="flex items-center gap-3 text-on-surface group cursor-pointer">
+<span class="material-symbols-outlined text-secondary/40 group-hover:text-secondary transition-colors" data-icon="work">work</span>
+<span class="font-body-md text-body-md">Project Phoenix</span>
+</li>
+<li class="flex items-center gap-3 text-on-surface group cursor-pointer">
+<span class="material-symbols-outlined text-secondary/40 group-hover:text-secondary transition-colors" data-icon="auto_stories">auto_stories</span>
+<span class="font-body-md text-body-md">Reading List</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-6 pt-4 bg-white/80 dark:bg-black/20 backdrop-blur-2xl shadow-[0_-8px_40px_rgba(0,0,0,0.04)] md:hidden rounded-t-[40px]">
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-2 active:scale-90 transition-transform duration-300">
+<span class="material-symbols-outlined" data-icon="description" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-label-caps text-[10px] mt-1">Notes</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high/50 transition-all active:scale-90 duration-300">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-caps text-[10px] mt-1">Search</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high/50 transition-all active:scale-90 duration-300">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-caps text-[10px] mt-1">Stats</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high/50 transition-all active:scale-90 duration-300">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-[10px] mt-1">Settings</span>
+</div>
+</nav>
+<!-- Desktop Navigation Drawer (Hidden on mobile) -->
+<aside class="hidden md:flex fixed inset-y-0 left-0 z-[60] flex flex-col p-8 h-full w-80 rounded-r-[40px] bg-surface dark:bg-surface-container border-r border-on-surface/10 -translate-x-full lg:translate-x-0 transition-transform duration-500">
+<div class="mb-12 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="ink_pen">ink_pen</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary">Peblo User</h4>
+<p class="font-body-md text-on-surface-variant text-sm">Personal Workspace</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 p-4 bg-secondary/10 text-secondary font-semibold rounded-xl hover:pl-2 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="folder" style="font-variation-settings: 'FILL' 1;">folder</span>
+<span>All Notes</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-container-low hover:pl-2 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Shared</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-container-low hover:pl-2 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="star">star</span>
+<span>Favorites</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-container-low hover:pl-2 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="archive">archive</span>
+<span>Archive</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-container-low hover:pl-2 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+<span>Trash</span>
+</a>
+</nav>
+<div class="mt-auto pt-8 border-t border-on-surface/5">
+<div class="glass-card bg-surface-container p-6 rounded-3xl">
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase mb-2 tracking-widest">Storage</p>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mb-2">
+<div class="w-2/3 h-full bg-secondary"></div>
+</div>
+<p class="text-[10px] text-on-surface-variant">2.4 GB of 5 GB used</p>
+</div>
+</div>
+</aside>
+</body></html>

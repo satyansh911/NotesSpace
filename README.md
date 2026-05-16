@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NotesSpace: Collaborative AI Notes Workspace
 
-## Getting Started
+NotesSpace is a premium, distraction-free collaborative AI notes workspace designed for thinkers and creators. It combines a minimalist "Noteshelf" aesthetic with powerful AI capabilities powered by Google Gemini.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-   **Distraction-Free Editor**: A clean, minimalist writing environment with glassmorphic UI elements and premium typography.
+-   **AI Spark Panel**: Integrated AI assistant that can summarize your notes and extract actionable items in real-time.
+-   **Real-time Auto-save**: Never lose a thought with debounced auto-saving to Supabase.
+-   **Public Sharing**: Share your notes with a single click. Generates a unique, read-only public URL for collaborators.
+-   **Insights Dashboard**: Track your productivity with an activity chart and workspace metrics.
+-   **Secure Authentication**: Built-in authentication using Supabase Auth with protected routes.
+-   **Bento-style UI**: A modern, responsive dashboard layout using CSS Grid and Flexbox.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-   **Framework**: Next.js 14 (App Router)
+-   **Styling**: Tailwind CSS
+-   **Database**: Supabase (PostgreSQL)
+-   **Authentication**: Supabase Auth (SSR)
+-   **AI API**: Google Generative AI (Gemini 1.5 Flash)
+-   **Icons**: Google Material Symbols
+-   **Animations**: CSS Transitions & Hover Effects
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+-   Node.js (v18+)
+-   Supabase Project
+-   Google AI Studio API Key (Gemini)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  **Clone the repository**:
+    ```bash
+    git clone [repository-url]
+    cd peblo-app
+    ```
 
-## Deploy on Vercel
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3.  **Set up environment variables**:
+    Create a `.env.local` file in the root directory and add the following:
+    ```env
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+    GEMINI_API_KEY=your_gemini_api_key
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4.  **Database Schema**:
+    Ensure the `notes` table is created in your Supabase project with the following columns:
+    - `id` (uuid, primary key)
+    - `user_id` (uuid, references auth.users)
+    - `title` (text)
+    - `content` (text)
+    - `is_public` (boolean)
+    - `share_id` (uuid, unique)
+    - `created_at` (timestamp)
+    - `updated_at` (timestamp)
+    - `summary` (text)
+    - `action_items` (jsonb)
+
+5.  **Run the development server**:
+    ```bash
+    npm run dev
+    ```
+
+6.  **Open the app**:
+    Navigate to `http://localhost:3000` to start capturing your thoughts.
+
+## 🎨 Design Inspiration
+
+The design is inspired by the **Noteshelf** aesthetic—prioritizing calm, minimalist layouts, soft cream backgrounds, and high-quality typography (Inter & Google Fonts).
+
+---
+
+Built with ❤️ by the NotesSpace Team.

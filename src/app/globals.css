@@ -1,26 +1,163 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary-fixed: #e4e2e4;
+  --color-surface-dim: #dbdad7;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-surface: #1b1c1a;
+  --color-on-secondary: #ffffff;
+  --color-surface: #fbf9f6;
+  --color-tertiary: #040302;
+  --color-outline: #77767b;
+  --color-surface-tint: #5f5e60;
+  --color-inverse-surface: #30312f;
+  --color-primary-container: #1d1d1f;
+  --color-on-tertiary-fixed-variant: #4c4544;
+  --color-primary: #030304;
+  --color-on-secondary-container: #fefcff;
+  --color-surface-variant: #e4e2df;
+  --color-on-tertiary-container: #8c8382;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #211c1b;
+  --color-inverse-on-surface: #f2f0ed;
+  --color-surface-container-high: #eae8e5;
+  --color-on-secondary-fixed: #001a41;
+  --color-on-error: #ffffff;
+  --color-secondary-container: #0070eb;
+  --color-tertiary-fixed: #ebe0de;
+  --color-outline-variant: #c7c6ca;
+  --color-on-tertiary-fixed: #1f1a19;
+  --color-secondary-fixed-dim: #adc6ff;
+  --color-tertiary-fixed-dim: #cec4c2;
+  --color-on-primary: #ffffff;
+  --color-surface-container: #efeeeb;
+  --color-on-surface-variant: #46464a;
+  --color-on-primary-fixed-variant: #474649;
+  --color-on-primary-fixed: #1b1b1d;
+  --color-error: #ba1a1a;
+  --color-secondary-fixed: #d8e2ff;
+  --color-on-background: #1b1c1a;
+  --color-surface-container-highest: #e4e2df;
+  --color-secondary: #0058bc;
+  --color-on-error-container: #93000a;
+  --color-surface-bright: #fbf9f6;
+  --color-on-secondary-fixed-variant: #004493;
+  --color-primary-fixed-dim: #c8c6c8;
+  --color-surface-container-low: #f5f3f0;
+  --color-on-primary-container: #868587;
+  --color-error-container: #ffdad6;
+  --color-background: #fbf9f6;
+  --color-inverse-primary: #c8c6c8;
+
+  --spacing-margin-desktop: 80px;
+  --spacing-section-gap: 120px;
+  --spacing-unit: 8px;
+  --spacing-margin-mobile: 20px;
+  --spacing-container-max: 1200px;
+  --spacing-gutter: 32px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@utility font-label-caps { font-family: var(--font-inter, "Inter", sans-serif); }
+@utility text-label-caps { font-size: 12px; line-height: 1; letter-spacing: 0.1em; font-weight: 600; }
+
+@utility font-body-md { font-family: var(--font-inter, "Inter", sans-serif); }
+@utility text-body-md { font-size: 16px; line-height: 1.6; font-weight: 400; }
+
+@utility font-headline-sm { font-family: var(--font-eb-garamond, "EB Garamond", serif); }
+@utility text-headline-sm { font-size: 24px; line-height: 1.4; font-weight: 500; }
+
+@utility font-headline-md { font-family: var(--font-eb-garamond, "EB Garamond", serif); }
+@utility text-headline-md { font-size: 32px; line-height: 1.3; font-weight: 500; }
+
+@utility font-display-lg-mobile { font-family: var(--font-eb-garamond, "EB Garamond", serif); }
+@utility text-display-lg-mobile { font-size: 40px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 500; }
+
+@utility font-display-lg { font-family: var(--font-eb-garamond, "EB Garamond", serif); }
+@utility text-display-lg { font-size: 64px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 500; }
+
+@utility font-body-lg { font-family: var(--font-inter, "Inter", sans-serif); }
+@utility text-body-lg { font-size: 18px; line-height: 1.6; font-weight: 400; }
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  min-height: max(884px, 100dvh);
+}
+
+@layer utilities {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  }
+  
+  .glass-card-dark {
+    background: rgba(15, 15, 18, 0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 
+      0 20px 25px -5px rgba(0, 0, 0, 0.5), 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .premium-shadow {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Basic Prose for Markdown */
+  .prose {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-on-surface);
+  }
+  .prose h1, .prose h2, .prose h3 {
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  .prose ul, .prose ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+  }
+  .prose li {
+    margin-bottom: 0.5em;
+  }
+  .prose p {
+    margin-bottom: 1em;
+  }
+  .prose strong {
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+  .prose code {
+    background: var(--color-surface-container);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 0.9em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+::selection {
+  background-color: var(--color-secondary);
+  color: white;
 }
