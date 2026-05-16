@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import debounce from 'lodash.debounce';
@@ -33,8 +33,8 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Debounced save function
-  const debouncedSave = useCallback(
-    debounce(async (id: string, newTitle: string, newContent: string, newIsPublic: boolean, newTags: string[], newIsFavorite: boolean) => {
+  const debouncedSave = useMemo(
+    () => debounce(async (id: string, newTitle: string, newContent: string, newIsPublic: boolean, newTags: string[], newIsFavorite: boolean) => {
       setSaveStatus('saving');
       try {
         await updateNote(id, { 
@@ -50,7 +50,7 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
         setSaveStatus('error');
       }
     }, 1000),
-    [updateNote]
+    []
   );
 
   // Trigger save on content or title change
