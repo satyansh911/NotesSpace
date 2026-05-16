@@ -14,13 +14,13 @@ NotesSpace is a premium, distraction-free collaborative AI notes workspace desig
 
 ## 🛠️ Tech Stack
 
--   **Framework**: Next.js 14 (App Router)
--   **Styling**: Tailwind CSS
--   **Database**: Supabase (PostgreSQL)
--   **Authentication**: Supabase Auth (SSR)
--   **AI API**: Google Generative AI (Gemini 1.5 Flash)
+-   **Framework**: Next.js 15+ (App Router)
+-   **Styling**: Tailwind CSS 4.0
+-   **Database**: Supabase (Postgres)
+-   **Authentication**: Custom secure JWT session handling (JOSE)
+-   **AI API**: Google Generative AI (Gemini 2.0 Flash)
 -   **Icons**: Google Material Symbols
--   **Animations**: CSS Transitions & Hover Effects
+-   **Animations**: Framer Motion
 
 ## 🚀 Getting Started
 
@@ -49,6 +49,7 @@ NotesSpace is a premium, distraction-free collaborative AI notes workspace desig
     NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
     NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
     GEMINI_API_KEY=your_gemini_api_key
+    AUTH_SECRET=your_random_secret_key
     ```
 
 4.  **Database Schema**:
