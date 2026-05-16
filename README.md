@@ -2,6 +2,9 @@
 
 NotesSpace is a premium, distraction-free collaborative AI notes workspace designed for thinkers and creators. It combines a minimalist "Noteshelf" aesthetic with powerful AI capabilities powered by Google Gemini.
 
+🔗 **Live Demo**: [notes-space-app.vercel.app](https://notes-space-app.vercel.app/)  
+💻 **GitHub Repository**: [github.com/satyansh911/NotesSpace](https://github.com/satyansh911/NotesSpace)
+
 ## ✨ Features
 
 -   **Distraction-Free Editor**: A clean, minimalist writing environment with glassmorphic UI elements and premium typography.
@@ -34,7 +37,7 @@ NotesSpace is a premium, distraction-free collaborative AI notes workspace desig
 
 1.  **Clone the repository**:
     ```bash
-    git clone [repository-url]
+    git clone https://github.com/satyansh911/NotesSpace.git
     cd peblo-app
     ```
 
