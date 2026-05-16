@@ -5,6 +5,7 @@ import { getMe } from '@/lib/actions/auth';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '@/context/ThemeContext';
 
 import { Note } from '@/types';
 
@@ -13,6 +14,7 @@ function DashboardContent() {
   const [user, setUser] = useState<{ id: string; email: string; ai_usage_count?: number } | null>(null);
 
   const [loading, setLoading] = useState(true);
+  const { theme, toggleTheme } = useTheme();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -141,6 +143,25 @@ function DashboardContent() {
             className="w-full bg-surface-container-low border border-outline-variant/10 rounded-full py-4 pl-14 pr-8 focus:outline-none focus:border-secondary focus:ring-4 focus:ring-secondary/5 transition-all text-body-md"
           />
         </form>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            className="w-11 h-11 rounded-xl bg-surface-container-low border border-outline-variant/10 hover:bg-surface-container flex items-center justify-center transition-all hover:scale-110 active:scale-95 text-on-surface-variant"
+          >
+            <span className="material-symbols-outlined">
+              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
+          </button>
+          {user && (
+            <div className="flex items-center gap-3 bg-surface-container-low border border-outline-variant/10 rounded-full px-4 py-2">
+              <div className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center">
+                <span className="material-symbols-outlined text-secondary text-sm">person</span>
+              </div>
+              <span className="text-sm text-on-surface-variant font-medium hidden sm:inline">{user.email?.split('@')[0]}</span>
+            </div>
+          )}
+        </div>
       </motion.div>
 
       {/* Hero Section */}

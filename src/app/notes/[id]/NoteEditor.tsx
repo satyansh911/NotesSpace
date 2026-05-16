@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import debounce from 'lodash.debounce';
@@ -9,6 +9,9 @@ import { processWithAI } from '@/lib/actions/ai';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { createClient } from '@supabase/supabase-js';
+import { useTheme } from '@/context/ThemeContext';
+import KeyboardShortcutsModal from '@/components/KeyboardShortcutsModal';
 
 import { Note } from '@/types';
 
@@ -28,9 +31,14 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
   const [isLinkCopied, setIsLinkCopied] = useState(false);
   const [tags, setTags] = useState<string[]>(initialNote.tags || []);
   const [tagInput, setTagInput] = useState('');
-  
+  const [showShortcuts, setShowShortcuts] = useState(false);
+  const [collaborators, setCollaborators] = useState(0);
+  const [isMarkdownPreview, setIsMarkdownPreview] = useState(false);
+
+  const { theme, toggleTheme } = useTheme();
   const router = useRouter();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const channelRef = useRef<ReturnType<ReturnType<typeof createClient>['channel']> | null>(null);
 
   // Debounced save function
   const debouncedSave = useMemo(
@@ -60,6 +68,115 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
       debouncedSave(initialNote.id, title, content, isPublic, tags, isFavorite);
     }
   }, [title, content, isPublic, tags, isFavorite, initialNote.id, initialNote.title, initialNote.content, initialNote.is_public, initialNote.tags, initialNote.is_favorite, debouncedSave]);
+
+  // ── Supabase Realtime Collaboration ──────────────────────
+  useEffect(() => {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+    const channel = supabase.channel(`note:${initialNote.id}`, {
+      config: { presence: { key: Math.random().toString(36).slice(2, 8) } },
+    });
+
+    channel
+      .on('presence', { event: 'sync' }, () => {
+        const state = channel.presenceState();
+        setCollaborators(Object.keys(state).length - 1); // exclude self
+      })
+      .on('broadcast', { event: 'content_update' }, ({ payload }) => {
+        if (payload.title !== undefined) setTitle(payload.title as string);
+        if (payload.content !== undefined) setContent(payload.content as string);
+      })
+      .subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await channel.track({ online_at: new Date().toISOString() });
+        }
+      });
+
+    channelRef.current = channel;
+    return () => { supabase.removeChannel(channel); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialNote.id]);
+
+  // Broadcast changes to collaborators
+  const broadcastUpdate = useCallback((newTitle: string, newContent: string) => {
+    channelRef.current?.send({
+      type: 'broadcast',
+      event: 'content_update',
+      payload: { title: newTitle, content: newContent },
+    });
+  }, []);
+
+  // ── Keyboard Shortcuts ────────────────────────────────────
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const inInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
+
+      // ? key — toggle shortcuts modal (only when not typing in tag input)
+      if (e.key === '?' && !inInput) {
+        e.preventDefault();
+        setShowShortcuts(s => !s);
+        return;
+      }
+
+      if (e.key === 'Escape') {
+        setShowShortcuts(false);
+        setIsAiPanelOpen(false);
+        setShowDeleteConfirm(false);
+        return;
+      }
+
+      if (!e.ctrlKey && !e.metaKey) return;
+
+      switch (e.key) {
+        case 's': {
+          e.preventDefault();
+          // Force immediate save
+          debouncedSave.flush?.();
+          updateNote(initialNote.id, { title, content, is_public: isPublic, tags, is_favorite: isFavorite })
+            .then(() => setSaveStatus('saved'))
+            .catch(() => setSaveStatus('error'));
+          break;
+        }
+        case '/': {
+          e.preventDefault();
+          setIsAiPanelOpen(s => !s);
+          break;
+        }
+        case 'b': {
+          if (!textareaRef.current) break;
+          e.preventDefault();
+          const { selectionStart: s, selectionEnd: end } = textareaRef.current;
+          const selected = content.substring(s, end);
+          const newContent = content.substring(0, s) + `**${selected}**` + content.substring(end);
+          setContent(newContent);
+          break;
+        }
+        case 'i': {
+          if (!textareaRef.current) break;
+          e.preventDefault();
+          const { selectionStart: s, selectionEnd: end } = textareaRef.current;
+          const selected = content.substring(s, end);
+          const newContent = content.substring(0, s) + `_${selected}_` + content.substring(end);
+          setContent(newContent);
+          break;
+        }
+        case 'k': {
+          if (!textareaRef.current) break;
+          e.preventDefault();
+          const { selectionStart: s, selectionEnd: end } = textareaRef.current;
+          const selected = content.substring(s, end) || 'link text';
+          const newContent = content.substring(0, s) + `[${selected}](url)` + content.substring(end);
+          setContent(newContent);
+          break;
+        }
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [content, title, isPublic, tags, isFavorite, initialNote.id, debouncedSave]);
 
   const handleGenerateAI = async (action: 'summarize' | 'action-items' | 'suggest-title') => {
     setIsGenerating(true);
@@ -251,6 +368,33 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
             <span className="material-symbols-outlined text-xl">delete</span>
           </button>
 
+          <button
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            className="w-10 h-10 rounded-xl bg-surface-container hover:bg-surface-container-high flex items-center justify-center transition-all hover:scale-110 active:scale-95 text-on-surface-variant"
+          >
+            <span className="material-symbols-outlined text-xl">
+              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setShowShortcuts(true)}
+            title="Keyboard Shortcuts (?)"
+            className="w-10 h-10 rounded-xl bg-surface-container hover:bg-surface-container-high flex items-center justify-center transition-all hover:scale-110 active:scale-95 text-on-surface-variant"
+          >
+            <span className="material-symbols-outlined text-xl">keyboard</span>
+          </button>
+
+          {collaborators > 0 && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-label-caps tracking-widest">
+                {collaborators} LIVE
+              </span>
+            </div>
+          )}
+
           <div className="w-px h-6 bg-outline-variant/20 mx-1" />
 
           <button 
@@ -272,7 +416,10 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              broadcastUpdate(e.target.value, content);
+            }}
             disabled={initialNote.is_deleted}
             placeholder="Untitled Note"
             className="w-full text-display-lg-mobile md:text-display-lg font-display-lg text-primary bg-transparent border-none outline-none mb-6 placeholder:text-on-surface-variant/20 leading-tight tracking-tighter disabled:opacity-50"
@@ -314,14 +461,48 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
             )}
           </div>
           
-          <textarea
-            ref={textareaRef}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            disabled={initialNote.is_deleted}
-            placeholder="Start your sanctuary of thoughts..."
-            className="w-full min-h-[600px] text-body-lg font-body-lg bg-transparent border-none outline-none resize-none placeholder:text-on-surface-variant/30 leading-relaxed text-on-surface-variant/80 selection:bg-secondary/20 disabled:opacity-50"
-          />
+          {/* Markdown preview toggle toolbar */}
+          <div className="flex items-center gap-2 mb-4">
+            <button
+              onClick={() => setIsMarkdownPreview(false)}
+              className={`px-4 py-1.5 rounded-xl text-[10px] font-label-caps tracking-widest transition-all ${
+                !isMarkdownPreview ? 'bg-secondary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+              }`}
+            >
+              WRITE
+            </button>
+            <button
+              onClick={() => setIsMarkdownPreview(true)}
+              className={`px-4 py-1.5 rounded-xl text-[10px] font-label-caps tracking-widest transition-all ${
+                isMarkdownPreview ? 'bg-secondary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+              }`}
+            >
+              PREVIEW
+            </button>
+            <span className="text-on-surface-variant/30 text-[9px] font-label-caps tracking-widest ml-2 hidden sm:inline">CTRL+B BOLD · CTRL+I ITALIC · CTRL+K LINK</span>
+          </div>
+
+          {isMarkdownPreview ? (
+            <div className="w-full min-h-[600px] prose prose-slate dark:prose-invert max-w-none text-on-surface-variant/80 leading-relaxed">
+              {content ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+              ) : (
+                <p className="text-on-surface-variant/30">Nothing to preview yet. Switch to Write to add content.</p>
+              )}
+            </div>
+          ) : (
+            <textarea
+              ref={textareaRef}
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value);
+                broadcastUpdate(title, e.target.value);
+              }}
+              disabled={initialNote.is_deleted}
+              placeholder="Start your sanctuary of thoughts..."
+              className="w-full min-h-[600px] text-body-lg font-body-lg bg-transparent border-none outline-none resize-none placeholder:text-on-surface-variant/30 leading-relaxed text-on-surface-variant/80 selection:bg-secondary/20 disabled:opacity-50"
+            />
+          )}
         </motion.div>
       </main>
 
@@ -462,6 +643,11 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
           </div>
         )}
       </AnimatePresence>
+      {/* Keyboard Shortcuts Modal */}
+      <KeyboardShortcutsModal
+        isOpen={showShortcuts}
+        onClose={() => setShowShortcuts(false)}
+      />
     </div>
   );
 }
