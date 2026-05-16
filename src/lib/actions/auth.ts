@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { hash, compare } from 'bcryptjs';
-import { encrypt, getSession, setSession, clearSession } from '@/lib/auth';
+import { getSession, setSession, clearSession } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 

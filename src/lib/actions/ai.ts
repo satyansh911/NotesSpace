@@ -19,7 +19,7 @@ export async function processWithAI(action: 'summarize' | 'action-items' | 'sugg
     'gemini-pro'
   ];
 
-  let lastError: any = null;
+  let lastError: Error | null = null;
 
   for (const modelName of modelsToTry) {
     try {
@@ -45,11 +45,12 @@ export async function processWithAI(action: 'summarize' | 'action-items' | 'sugg
       await incrementAiUsage();
       
       return text;
-    } catch (error: any) {
-      console.warn(`Gemini model ${modelName} (v1) failed:`, error.message);
-      lastError = error;
+    } catch (error) {
+      const err = error as Error & { status?: number };
+      console.warn(`Gemini model ${modelName} (v1) failed:`, err.message);
+      lastError = err;
       
-      if (error.status === 401 || error.status === 403) {
+      if (err.status === 401 || err.status === 403) {
         break; 
       }
       continue;

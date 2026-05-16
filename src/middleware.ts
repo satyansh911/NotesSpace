@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
     try {
       await jwtVerify(session, key);
       return NextResponse.redirect(new URL('/dashboard', request.url));
-    } catch (e) {
+    } catch {
       // Invalid session, let user stay on auth page
     }
   }

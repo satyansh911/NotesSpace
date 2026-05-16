@@ -144,7 +144,7 @@ export async function updateNote(id: string, updates: {
   is_archived?: boolean;
   is_favorite?: boolean;
   summary?: string;
-  action_items?: any;
+  action_items?: string;
 }) {
   const supabase = await createClient();
   const session = await getSession();
