@@ -287,7 +287,7 @@ function DashboardContent() {
           className="md:col-span-4 space-y-gutter"
         >
           {/* Activity Stats */}
-          <div className="glass-card bg-white p-10 rounded-[48px] shadow-xl shadow-primary/5 border border-outline-variant/5 relative overflow-hidden group">
+          <div className="glass-card bg-surface-container-low p-10 rounded-[48px] shadow-xl shadow-primary/5 border border-outline-variant/10 relative overflow-hidden group">
             <h3 className="font-headline-sm text-headline-sm text-primary mb-8 tracking-tight flex items-center gap-2">
               Activity
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>

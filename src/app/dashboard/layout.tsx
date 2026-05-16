@@ -37,7 +37,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="text-on-surface font-body-md text-body-md selection:bg-secondary-fixed-dim bg-background min-h-screen">
       {/* TopAppBar */}
-      <header className="fixed top-0 w-full z-50 flex items-center justify-between px-margin-mobile h-16 bg-white/80 dark:bg-black/20 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(0,122,255,0.15)] md:px-margin-desktop">
+      <header className="fixed top-0 w-full z-50 flex items-center justify-between px-margin-mobile h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/10 md:px-margin-desktop">
         <div className="flex items-center gap-4">
           <button className="active:scale-95 duration-200 hover:opacity-80 transition-opacity md:hidden">
             <span className="material-symbols-outlined text-primary">menu</span>
@@ -66,7 +66,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
                    animate={{ opacity: 1, y: 0, scale: 1 }}
                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                   className="absolute right-0 top-16 w-48 glass-card bg-white p-2 rounded-2xl shadow-2xl z-50"
+                   className="absolute right-0 top-16 w-48 glass-card bg-surface-container-low p-2 rounded-2xl shadow-2xl z-50"
                  >
                    <button 
                      onClick={handleLogout}
@@ -135,12 +135,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       {/* Main Content Area */}
-      <div className="md:pl-80 pt-16 pb-24 md:pb-8 h-screen overflow-y-auto">
+      <div className="md:pl-80 pt-16 pb-24 md:pb-8 h-screen overflow-y-auto bg-background">
         {children}
       </div>
 
       {/* BottomNavBar */}
-      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-6 pt-4 bg-white/80 dark:bg-black/20 backdrop-blur-2xl shadow-[0_-8px_40px_rgba(0,0,0,0.04)] md:hidden rounded-t-[40px]">
+      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-6 pt-4 bg-surface/80 backdrop-blur-2xl border-t border-outline-variant/10 md:hidden rounded-t-[40px]">
         {navItems.slice(0, 4).map((item, i) => {
           const isActive = pathname === item.href;
           return (

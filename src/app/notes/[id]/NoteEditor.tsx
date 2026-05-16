@@ -514,7 +514,7 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-6 top-24 bottom-6 w-80 md:w-96 glass-card bg-white/95 backdrop-blur-2xl rounded-[32px] p-6 flex flex-col shadow-2xl z-50 border border-white/20"
+            className="fixed right-6 top-24 bottom-6 w-80 md:w-96 glass-card bg-surface-container-low/95 backdrop-blur-2xl rounded-[32px] p-6 flex flex-col shadow-2xl z-50 border border-outline-variant/20"
           >
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-headline-sm text-primary flex items-center gap-2">
@@ -616,7 +616,7 @@ export default function NoteEditor({ initialNote }: { initialNote: Note }) {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative z-10 bg-white rounded-[32px] p-10 max-w-md w-full shadow-2xl text-center"
+              className="relative z-10 bg-surface-container-low rounded-[32px] p-10 max-w-md w-full shadow-2xl text-center border border-outline-variant/20"
             >
               <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-6 text-amber-500">
                 <span className="material-symbols-outlined text-4xl">delete</span>
